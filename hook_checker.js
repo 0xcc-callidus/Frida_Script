@@ -311,13 +311,13 @@ function getSymbol(addr) {
     dladdr(npaddr, dlinfo);
     var sym = new Object();
     if (Process.pointerSize == 4) {
-        libnameptr = getPt(dlinfo.add(0));
+        var libnameptr = getPt(dlinfo.add(0));
         if (libnameptr.isNull()) {
             sym.libname = "unknown";
         } else {
             sym.libname = getStr(libnameptr);
         }
-        funcnameptr = getPt(dlinfo.add(8));
+        var funcnameptr = getPt(dlinfo.add(8));
         if (funcnameptr.isNull()) {
             sym.funcname = "unknown";
         } else {
@@ -326,13 +326,13 @@ function getSymbol(addr) {
         sym.libbase = getU32(dlinfo.add(4));
         sym.funcoff = npaddr.sub(getPt(dlinfo.add(12)));
     } else {
-        libnameptr = getPt(dlinfo.add(0));
+        var libnameptr = getPt(dlinfo.add(0));
         if (libnameptr.isNull()) {
             sym.libname = "unknown";
         } else {
             sym.libname = getStr(libnameptr);
         }
-        funcnameptr = getPt(dlinfo.add(16));
+        var funcnameptr = getPt(dlinfo.add(16));
         if (funcnameptr.isNull()) {
             sym.funcname = "unknown";
         } else {
@@ -582,7 +582,7 @@ function getElfData(module) {
 
 function compareMemory(module, mask) {
     for (var i = 0; i < module.sections.length; i++) {
-        section = module.sections[i];
+        var section = module.sections[i];
         if (section.name == ".rodata" && (mask & 1) != 0) {
             // Compare directly
             console.log("check .rodata");
@@ -600,7 +600,7 @@ function compareMemory(module, mask) {
             var memdata = new Uint8Array(getByteArr(ptr(section.memaddr), section.size));
             for (var j = 0; j < section.size; j++) {
                 if (filedata[j] != memdata[j]) {
-                    sym = getSymbol(section.memaddr + j);
+                    var sym = getSymbol(section.memaddr + j);
                     console.log(".text\taddr:" + sym.funcname + "+" + sym.funcoff.toString(16) + " file-mem:" + filedata[j].toString(16) + "-" + memdata[j].toString(16));
                     if ((memdata[j] == 0x01 && memdata[j + 1] == 0x00 && memdata[j + 2] == 0x9f && memdata[j + 3] == 0xef) || (memdata[j] == 0xf0 && memdata[j + 1] == 0x01 && memdata[j + 2] == 0xf0 && memdata[j + 3] == 0xe7) || (memdata[j] == 0x01 && memdata[j + 1] == 0xde) || (memdata[j] == 0xf0 && memdata[j + 1] == 0xf7 && memdata[j + 2] == 0x00 && memdata[j + 3] == 0xa0) || (memdata[j] == 0x0d && memdata[j + 1] == 0x00 && memdata[j + 2] == 0x05 && memdata[j + 3] == 0x00) || (memdata[j] == 0x00 && memdata[j + 1] == 0x00 && memdata[j + 2] == 0x20 && memdata[j + 3] == 0xd4) || memdata[j] == 0xcc) {
                         console.log("software breakpoint detected!!!");
