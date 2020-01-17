@@ -497,11 +497,11 @@ function getElfData(module) {
     lseek(fd, shoff, SEEK_SET);
     read(fd, shdrs, shentsize * shnum);
     if (is32bit) {
-        shstr_offset = getU32(shdrs.add(shentsize * shstrndx + off_of_Elf_Shdr_shoffset));
-        shstr_size = getU32(shdrs.add(shentsize * shstrndx + off_of_Elf_Shdr_shsize));
+        var shstr_offset = getU32(shdrs.add(shentsize * shstrndx + off_of_Elf_Shdr_shoffset));
+        var shstr_size = getU32(shdrs.add(shentsize * shstrndx + off_of_Elf_Shdr_shsize));
     } else {
-        shstr_offset = getU64(shdrs.add(shentsize * shstrndx + off_of_Elf_Shdr_shoffset));
-        shstr_size = getU64(shdrs.add(shentsize * shstrndx + off_of_Elf_Shdr_shsize));
+        var shstr_offset = getU64(shdrs.add(shentsize * shstrndx + off_of_Elf_Shdr_shoffset));
+        var shstr_size = getU64(shdrs.add(shentsize * shstrndx + off_of_Elf_Shdr_shsize));
     }
     var str_tbl = malloc(shstr_size);
     lseek(fd, shstr_offset, SEEK_SET);
