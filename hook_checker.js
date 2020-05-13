@@ -247,6 +247,9 @@ function popen(command, type) {
     return wrapper_popen(command, type);
 }
 
+// 이거 cp command는 안먹힌다. 
+// 원인을 파악해 보자면 android app의 경우 manifest에 external storage write 권한을 줘야 하는데, 이게 없으면 안되는거 같다. ( TEST는 안해봄)
+// 현재는 cp를 쓰는 경우 위치를 /data/data/[해당 app package명]/ 아래로 해주고 사용하는 중이다. 
 function getCommandOutput(cmd) {
     var fp = popen(cmd, "r");
     if (fp.isNull()) {
