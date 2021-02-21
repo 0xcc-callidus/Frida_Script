@@ -2,4 +2,4 @@
 
 
 1. hook_checker
-- var가 누락된 case가 있을수 있다. 
+- javascript var keyword가 누락된 case가 있을수 있으니 주의
